@@ -44,7 +44,7 @@ object Day04 extends IORunner {
 
   }
 
-  private val data = (for {
+  private val data = for {
     input   <- streamInputLines("day04.task1").compile.toList
 
     numbers <- IO { input.head.split(",").map(_.toInt) }
@@ -52,10 +52,10 @@ object Day04 extends IORunner {
         case (data, index) => BingBoard(index, data)
       }.toSeq
     }
-  } yield (numbers, boards)).memoize
+  } yield (numbers, boards)
 
   override def task1: IO[Unit] = for {
-    input  <- data.flatMap(io => io)
+    input  <- data
     winner <- IO { computeWinner(input._1.toList, input._2) }
     score  <- IO { winner._2.numbers.keys.sum * winner._1 }
 
@@ -63,7 +63,7 @@ object Day04 extends IORunner {
   } yield ()
 
   override def task2: IO[Unit] = for {
-    input  <- data.flatMap(io => io)
+    input  <- data
     winner <- IO { computeWinnerSequence(input._1.toList, input._2, List.empty) }
     score  <- IO {
       val (num, winnerBoard) = winner.head
