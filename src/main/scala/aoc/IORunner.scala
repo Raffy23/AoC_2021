@@ -22,6 +22,13 @@ trait IORunner extends IOApp {
       .through(text.lines)
       .filter(_.nonEmpty)
 
+  protected def streamIntegers(name: String): fs2.Stream[IO, Int] =
+    Files[IO]
+      .readAll(Path(s"./inputs/$name"))
+      .split(_ == ',')
+      .map(chunk => String.valueOf(chunk.map(_.asInstanceOf[Char]).toArray).trim)
+      .map(_.toInt)
+
   override def run(args: List[String]): IO[ExitCode] = for {
     startTime  <- IO.monotonic
 
