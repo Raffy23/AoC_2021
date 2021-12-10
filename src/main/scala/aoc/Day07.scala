@@ -1,6 +1,6 @@
 package aoc
 import cats.effect.IO
-import fs2.io.file.{Files, Path}
+import aoc.utils.Math
 
 /**
  * Created by 
@@ -14,7 +14,7 @@ object Day07 extends IORunner {
    streamIntegers("day07.task1")
       .compile
       .toVector
-      .map(median)
+      .map(Math.median[Int])
       .map { case (list, median) =>
         list.foldLeft(0) { case (fuel, crab) => fuel + math.abs(median - crab) }
       }
@@ -24,7 +24,7 @@ object Day07 extends IORunner {
     streamIntegers("day07.task1")
       .compile
       .toVector
-      .map(median)
+      .map(Math.median[Int])
       .map { case (list, median) =>
         // Search around the median for the solution, mean would be
         // better ... ? (This is a approximation, may not yield result!)
@@ -46,15 +46,5 @@ object Day07 extends IORunner {
         solutions.min
       }
       .flatMap(num => IO.println(s"Task2: $num"))
-
-  private def median(list: Seq[Int]): (Seq[Int], Int) = {
-    val sorted = list.sorted
-    val median = if (list.size % 2 == 1) sorted(list.size/2)
-                 else                   (sorted(list.size/2-1) + sorted(list.size/2))/2
-
-    (sorted, median)
-  }
-
-
 
 }
