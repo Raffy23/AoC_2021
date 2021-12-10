@@ -25,7 +25,7 @@ object Day02 extends IORunner {
     def start: Position = Position(0, 0)
   }
 
-  override protected  def task1: IO[Unit] =
+  override def task1: IO[Int] =
     streamPositions("day02.task1")
       .fold(Position.start) {
         case (position, Input(Direction.forward, value)) => Position(position.horizontal + value, position.depth        )
@@ -33,11 +33,10 @@ object Day02 extends IORunner {
         case (position, Input(Direction.up     , value)) => Position(position.horizontal        , position.depth - value)
       }
       .map(position => position.horizontal * position.depth)
-      .evalTap(v => IO.println(s"Task1: $v"))
       .compile
-      .drain
+      .lastOrError
 
-  override protected  def task2: IO[Unit] =
+  override def task2: IO[Int] =
     streamPositions("day02.task1")
       .fold(Position.start) {
         case (position, Input(Direction.forward, value)) => Position(position.horizontal + value, position.depth + position.aim * value, position.aim)
@@ -45,9 +44,8 @@ object Day02 extends IORunner {
         case (position, Input(Direction.up     , value)) => Position(position.horizontal        , position.depth                       , position.aim - value)
       }
       .map(position => position.horizontal * position.depth)
-      .evalTap(v => IO.println(s"Task2: $v"))
       .compile
-      .drain
+      .lastOrError
 
 
   private def streamPositions(file: String): fs2.Stream[IO, Input] =

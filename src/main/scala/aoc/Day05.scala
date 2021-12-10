@@ -24,19 +24,17 @@ object Day05 extends IORunner {
     }
   }
 
-  override def task2: IO[Unit] = {
+  override def task2: IO[Int] = {
     streamInputLines("day05.task1")
       .map(Line.apply)
       .groupByIntersections
-      .flatMap(c => IO.println(s"Task2: $c"))
   }
 
-  override def task1: IO[Unit] =
+  override def task1: IO[Int] =
     streamInputLines("day05.task1")
       .map(Line.apply)
       .filter(_.isHorizontalOrVertical)
       .groupByIntersections
-      .flatMap(c => IO.println(s"Task1: $c"))
 
   implicit class PointIterator(private val start: Point) extends AnyVal {
 

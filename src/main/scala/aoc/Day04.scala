@@ -54,15 +54,14 @@ object Day04 extends IORunner {
     }
   } yield (numbers, boards)
 
-  override def task1: IO[Unit] = for {
+  override def task1: IO[Int] = for {
     input  <- data
     winner <- IO { computeWinner(input._1.toList, input._2) }
     score  <- IO { winner._2.numbers.keys.sum * winner._1 }
 
-    _ <- IO.println(s"Task1: $score")
-  } yield ()
+  } yield score
 
-  override def task2: IO[Unit] = for {
+  override def task2: IO[Int] = for {
     input  <- data
     winner <- IO { computeWinnerSequence(input._1.toList, input._2, List.empty) }
     score  <- IO {
@@ -70,8 +69,7 @@ object Day04 extends IORunner {
       winnerBoard.numbers.keys.sum * num
     }
 
-    _ <- IO.println(s"Task2: $score")
-  } yield ()
+  } yield score
 
 
   @tailrec

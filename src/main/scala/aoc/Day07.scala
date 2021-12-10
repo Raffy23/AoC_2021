@@ -10,21 +10,20 @@ import aoc.utils.Math
  */
 object Day07 extends IORunner {
 
-  override def task1: IO[Unit] =
+  override def task1: IO[Int] =
    streamIntegers("day07.task1")
       .compile
       .toVector
-      .map(Math.median[Int])
+      .map(Math.medianAndSortedList[Int])
       .map { case (list, median) =>
         list.foldLeft(0) { case (fuel, crab) => fuel + math.abs(median - crab) }
       }
-      .flatMap(num => IO.println(s"Task1: $num"))
 
-  override def task2: IO[Unit] =
+  override def task2: IO[Int] =
     streamIntegers("day07.task1")
       .compile
       .toVector
-      .map(Math.median[Int])
+      .map(Math.medianAndSortedList[Int])
       .map { case (list, median) =>
         // Search around the median for the solution, mean would be
         // better ... ? (This is a approximation, may not yield result!)
@@ -45,6 +44,5 @@ object Day07 extends IORunner {
 
         solutions.min
       }
-      .flatMap(num => IO.println(s"Task2: $num"))
 
 }

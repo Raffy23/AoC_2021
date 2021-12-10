@@ -34,7 +34,7 @@ object Day10 extends IORunner {
     }
   }
 
-  override def task1: IO[Unit] =
+  override def task1: IO[Int] =
     streamInputLines("day10.task1")
       .map(str => matchParentheses(str.toList, List.empty, List.empty))
       .filter(_._2.nonEmpty)
@@ -47,9 +47,8 @@ object Day10 extends IORunner {
       .compile
       .toVector
       .map(_.flatten.sum)
-      .flatMap(points => IO.println(s"Task1: $points"))
 
-  override def task2: IO[Unit] =
+  override def task2: IO[Long] =
     streamInputLines("day10.task1")
       .map(str => matchParentheses(str.toList, List.empty, List.empty))
       .filter(_._2.isEmpty)
@@ -64,6 +63,5 @@ object Day10 extends IORunner {
       .compile
       .toVector
       .map(Math.median[Long])
-      .flatMap(result => IO.println(s"Task2: ${result._2}"))
 
 }

@@ -38,13 +38,11 @@ object Day06 extends IORunner  {
       })
       .map(_.values.sum)
 
-  override def task1: IO[Unit] =
+  override def task1: IO[Long] =
     calculateReproduction("./inputs/day06.task1", 80)
-      .flatMap(count => IO.println(s"Task1: $count"))
 
-  override def task2: IO[Unit] =
+  override def task2: IO[Long] =
     calculateReproduction("./inputs/day06.task1", 256)
-      .flatMap(count => IO.println(s"Task2: $count"))
 
 }
 

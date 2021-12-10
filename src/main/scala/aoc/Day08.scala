@@ -15,7 +15,7 @@ object Day08 extends IORunner {
     override def toString: String = pattern.mkString
   }
 
-  override def task1: IO[Unit] =
+  override def task1: IO[Int] =
     streamInput()
       .map { case Input(_, display) =>
         display.flatMap(_.numberOfEnabledSegments match {
@@ -29,9 +29,8 @@ object Day08 extends IORunner {
       .compile
       .toList
       .map(_.sum)
-      .flatMap(n => IO.println(s"Task1: $n"))
 
-  override def task2: IO[Unit] =
+  override def task2: IO[Int] =
     streamInput()
       .map { case Input(wires, display) =>
         val sets    = wires.map(_.pattern.toSet)
@@ -72,7 +71,6 @@ object Day08 extends IORunner {
       .compile
       .toList
       .map(_.sum)
-      .flatMap(sum => IO.println(s"Task2: $sum"))
 
   private def streamInput(): fs2.Stream[IO, Input] =
     streamInputLines("day08.task1")

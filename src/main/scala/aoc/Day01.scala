@@ -14,21 +14,21 @@ object Day01 extends IORunner {
     def empty: Counter = Counter(-1L, 0)
   }
 
-  override protected  def task1: IO[Unit] =
+  override def task1: IO[Int] =
     readInput("day01.task1")
       .fold(Counter.empty)(countBiggerElements)
-      .evalTap(counter => IO.println(s"Task1: ${counter.count}"))
       .compile
-      .drain
+      .lastOrError
+      .map(_.count)
 
-  override protected def task2: IO[Unit] =
+  override def task2: IO[Int] =
     readInput("day01.task1")
       .sliding(3, 1)
       .map(_.foldLeft(0L)(_ + _))
       .fold(Counter.empty)(countBiggerElements)
-      .evalTap(counter => IO.println(s"Task2: ${counter.count}"))
       .compile
-      .drain
+      .lastOrError
+      .map(_.count)
 
   private def countBiggerElements(counter: Counter, element: Long): Counter = {
     if (counter.lastElement == -1)          Counter(element, 0)

@@ -67,12 +67,11 @@ object Day09 extends IORunner {
 
   }
 
-  override def task1: IO[Unit] =
+  override def task1: IO[Int] =
     readInputMatrix
       .map(_.lowPoints.map(_._3 + 1).sum)
-      .flatMap(risk => IO.println(s"Task1: $risk"))
 
-  override def task2: IO[Unit] =
+  override def task2: IO[Int] =
     readInputMatrix.map(matrix =>
       matrix
         .lowPoints
@@ -81,7 +80,6 @@ object Day09 extends IORunner {
         .takeRight(3)
         .product
     )
-    .flatMap(v => IO.println(s"Task2: $v"))
 
   private def readInputMatrix: IO[Matrix] =
     streamInputLines("day09.task1")

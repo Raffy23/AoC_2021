@@ -31,7 +31,7 @@ object Day03 extends IORunner {
     def empty: PowerConsumption = PowerConsumption(0, 0)
   }
 
-  override def task2: IO[Unit] = for {
+  override def task2: IO[Int] = for {
     inputs <- streamInputLines("day03.task1").compile.toVector
 
     oxygen <- IO {
@@ -42,23 +42,22 @@ object Day03 extends IORunner {
       Integer.valueOf(filterData(0, (ones, zeros) => if (ones >= zeros) '0' else '1', inputs).head, 2)
     }
 
-    _ <- IO.println(s"Task2: ${oxygen * co2Scrubber}")
-  } yield ()
+  } yield oxygen * co2Scrubber
 
-  override def task1: IO[Unit] =
+  override def task1: IO[Int] =
     streamInputLines("day03.task1")
       .fold(DiagnosticOutput.initial) { case (output, line) =>
         output.modify(line)
       }
       .compile
       .lastOrError
-      .flatMap { diagnostics =>
+      .map { diagnostics =>
         val (gamma, epsilon) = diagnostics.ones.foldLeft((0, 0)) {
           case ((gamma, epsilon), value) if value > diagnostics.lines - value => (gamma << 1 | 1, epsilon << 1 | 0)
           case ((gamma, epsilon), value) if value < diagnostics.lines - value => (gamma << 1 | 0, epsilon << 1 | 1)
         }
 
-        IO.println(s"Task1: ${gamma * epsilon}")
+        gamma * epsilon
       }
 
   @tailrec
