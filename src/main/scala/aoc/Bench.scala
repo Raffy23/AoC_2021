@@ -59,5 +59,8 @@ class Bench {
   @Benchmark def Day10_Task1(blackhole: Blackhole): Unit = blackhole.consume(Day10.task1.unsafeRunSync())
   @Benchmark def Day10_Task2(blackhole: Blackhole): Unit = blackhole.consume(Day10.task2.unsafeRunSync())
 
+  @Benchmark def Day11_Task1(blackhole: Blackhole): Unit = blackhole.consume(Day11.task1.unsafeRunSync())
+  @Benchmark def Day11_Task2(blackhole: Blackhole): Unit = blackhole.consume(Day11.task2.unsafeRunSync())
+
 }
 

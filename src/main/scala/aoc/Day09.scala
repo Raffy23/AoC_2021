@@ -1,5 +1,8 @@
 package aoc
 import cats.effect.IO
+import utils.{Matrix, MatrixStreamReader}
+
+import scala.language.implicitConversions
 
 /**
  * Created by 
@@ -9,9 +12,27 @@ import cats.effect.IO
  */
 object Day09 extends IORunner {
 
-  case class Matrix(m: IndexedSeq[Array[Int]]) {
+  override def task1: IO[Int] =
+    streamInputLines("day09.task1")
+      .toMatrix
+      .map(_.lowPoints.map(_._3 + 1).sum)
+
+  override def task2: IO[Int] =
+    streamInputLines("day09.task1")
+      .toMatrix
+      .map(matrix =>
+        matrix
+          .lowPoints
+          .map { case (x,y, _) => matrix.basinOf(x,y).size }
+          .sorted
+          .takeRight(3)
+          .product
+      )
+
+  implicit class RichMatrix(private val matrix: Matrix) extends AnyVal {
 
     def isLowPoint(x: Int, y: Int): Boolean = {
+      val m = matrix.m
       val currentValue = m(x)(y)
       if (currentValue == 9)
         return false
@@ -26,14 +47,15 @@ object Day09 extends IORunner {
     }
 
     def lowPoints: Seq[(Int, Int, Int)] =
-      m.zipWithIndex.flatMap { case (rows, x) =>
+      matrix.m.zipWithIndex.flatMap { case (rows, x) =>
         rows.zipWithIndex.map { case (cell, y) =>
           (x, y, cell, isLowPoint(x, y))
         }
       }.filter(_._4)
-       .map { case (x, y, cell, _) => (x,y,cell) }
+        .map { case (x, y, cell, _) => (x,y,cell) }
 
     def basinOf(x: Int, y: Int): List[((Int, Int), Int)] = {
+      val m = matrix.m
       var marked = Set((x,y))
       var queue  = List((x,y))
       var result = List.empty[((Int, Int), Int)]
@@ -59,33 +81,6 @@ object Day09 extends IORunner {
       result
     }
 
-    override def toString: String =
-      m.map(_
-        .map(_.toString)
-        .mkString
-      ).mkString("\n")
-
   }
-
-  override def task1: IO[Int] =
-    readInputMatrix
-      .map(_.lowPoints.map(_._3 + 1).sum)
-
-  override def task2: IO[Int] =
-    readInputMatrix.map(matrix =>
-      matrix
-        .lowPoints
-        .map { case (x,y, _) => matrix.basinOf(x,y).size }
-        .sorted
-        .takeRight(3)
-        .product
-    )
-
-  private def readInputMatrix: IO[Matrix] =
-    streamInputLines("day09.task1")
-      .map(_.toArray.map(c => (c - '0').toInt))
-      .compile
-      .toVector
-      .map(Matrix)
 
 }
