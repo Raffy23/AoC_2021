@@ -16,12 +16,16 @@ trait IORunner extends IOApp {
 
   def task2: IO[Any]
 
-  protected def streamInputLines(name: String): fs2.Stream[IO, String] =
-    Files[IO]
-      .readAll(Path(s"./inputs/$name"))
-      .through(text.utf8.decode)
-      .through(text.lines)
-      .filter(_.nonEmpty)
+  protected def streamInputLines(name: String, filterNonEmpty: Boolean = true): fs2.Stream[IO, String] = {
+    val stream =
+      Files[IO]
+        .readAll(Path(s"./inputs/$name"))
+        .through(text.utf8.decode)
+        .through(text.lines)
+
+    if (filterNonEmpty) stream.filter(_.nonEmpty)
+    else                stream
+  }
 
   protected def streamIntegers(name: String): fs2.Stream[IO, Int] =
     Files[IO]
