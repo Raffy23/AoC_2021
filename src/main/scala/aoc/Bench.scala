@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit
 @BenchmarkMode(Array(Mode.AverageTime))
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Benchmark)
-@Warmup(iterations = 3, time = 1)
-@Measurement(iterations = 7, time = 2)
+@Warmup(iterations = 2, time = 500, timeUnit = TimeUnit.MILLISECONDS)
+@Measurement(iterations = 5, time = 100, timeUnit = TimeUnit.MILLISECONDS)
 class Bench {
 
   private implicit var unsafeIORuntime: IORuntime = _
@@ -62,5 +62,22 @@ class Bench {
   @Benchmark def Day11_Task1(blackhole: Blackhole): Unit = blackhole.consume(Day11.task1.unsafeRunSync())
   @Benchmark def Day11_Task2(blackhole: Blackhole): Unit = blackhole.consume(Day11.task2.unsafeRunSync())
 
+  @Benchmark def Day12_Task1(blackhole: Blackhole): Unit = blackhole.consume(Day12.task1.unsafeRunSync())
+  @Benchmark def Day12_Task2(blackhole: Blackhole): Unit = blackhole.consume(Day12.task2.unsafeRunSync())
+
+  @Benchmark def Day13_Task1(blackhole: Blackhole): Unit = blackhole.consume(Day13.task1.unsafeRunSync())
+  @Benchmark def Day13_Task2(blackhole: Blackhole): Unit = blackhole.consume(Day13.task2.unsafeRunSync())
+
+  @Benchmark def Day14_Task1(blackhole: Blackhole): Unit = blackhole.consume(Day14.task1.unsafeRunSync())
+  @Benchmark def Day14_Task2(blackhole: Blackhole): Unit = blackhole.consume(Day14.task2.unsafeRunSync())
+
+  @Benchmark def Day15_Task1(blackhole: Blackhole): Unit = blackhole.consume(Day15.task1.unsafeRunSync())
+  @Benchmark def Day15_Task2(blackhole: Blackhole): Unit = blackhole.consume(Day15.task2.unsafeRunSync())
+
+  @Benchmark def Day16_Task1(blackhole: Blackhole): Unit = blackhole.consume(Day16.task1.unsafeRunSync())
+  @Benchmark def Day16_Task2(blackhole: Blackhole): Unit = blackhole.consume(Day16.task2.unsafeRunSync())
+
+  @Benchmark def Day17_Task1(blackhole: Blackhole): Unit = blackhole.consume(Day17.task1.unsafeRunSync())
+  @Benchmark def Day17_Task2(blackhole: Blackhole): Unit = blackhole.consume(Day17.task2.unsafeRunSync())
 }
 
