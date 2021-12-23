@@ -27,6 +27,11 @@ trait IORunner extends IOApp {
     else                stream
   }
 
+  protected def streamInputAsString(name: String): fs2.Stream[IO, String] =
+    Files[IO]
+      .readAll(Path(s"./inputs/$name"))
+      .through(text.utf8.decode)
+
   protected def streamIntegers(name: String): fs2.Stream[IO, Int] =
     Files[IO]
       .readAll(Path(s"./inputs/$name"))
